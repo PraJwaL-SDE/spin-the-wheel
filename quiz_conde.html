@@ -63,11 +63,19 @@
             font-weight: bold;
             margin-top: 20px;
         }
+
+        #theory {
+            font-size: 16px;
+            color: #555;
+            font-weight: normal;
+            margin-top: 30px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Select the option that does not violets the Fundamental Right?</h1>
+        <h1>Select the option that does not violate the Fundamental Right?</h1>
         <div class="options">
             <div class="option-container">
                 <img src="option_1.png" alt="Option 1" class="option" id="option1">
@@ -87,28 +95,56 @@
             </div>
         </div>
         <p id="result"></p>
+        <p id="theory" style="background-color: rgb(146, 143, 146); color: black; font-weight: bolder; border: 2px dashed black; border-radius: 20px;"></p>
     </div>
 
     <script>
         // Correct answer is option 2
         const correctAnswer = "option2";
+        let selectedOptions = new Set(); // To track clicked options
+
+        // Define theory for each option
+        const optionTheories = {
+            "option1": "Theory: Option A represents a violation of free speech.",
+            "option2": "Theory: Option B protects fundamental rights such as freedom of religion.",
+            "option3": "Theory: Option C violates the right to equality.",
+            "option4": "Theory: Option D breaches the right to education."
+        };
 
         document.querySelectorAll(".option").forEach(option => {
             option.addEventListener("click", function() {
-                checkAnswer(this.id);
+                const selectedOption = this.id;
+                selectedOptions.add(selectedOption);
+                checkAnswer(selectedOption);
             });
         });
 
         function checkAnswer(selectedOption) {
             const resultText = document.getElementById("result");
+            const theoryText = document.getElementById("theory");
             
             if (selectedOption === correctAnswer) {
-                resultText.textContent = "Correct! This is the flag of India.";
+                resultText.textContent = "Correct! This option does not violate the fundamental rights.";
                 resultText.style.color = "green";
             } else {
                 resultText.textContent = "Wrong answer. Try again!";
                 resultText.style.color = "red";
             }
+
+            // Show specific theory based on the selected option
+            theoryText.textContent = optionTheories[selectedOption];
+            theoryText.style.display = "block"; // Display the theory
+
+            // Show all theories once all options have been clicked
+            if (selectedOptions.size === 4) {
+                showFinalTheory();
+            }
+        }
+
+        function showFinalTheory() {
+            const finalTheory = "All options explored: Understanding the nuances of fundamental rights is key to ensuring their protection.";
+            const theoryText = document.getElementById("theory");
+            theoryText.textContent += ` ${finalTheory}`;
         }
     </script>
 </body>
